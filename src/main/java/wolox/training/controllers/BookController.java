@@ -26,6 +26,12 @@ public class BookController {
     @Autowired
     private BookRepository bookRepository;
 
+    /**
+     *
+     * @param name Name of a person
+     * @param model Model of the application
+     * @return "Hola" + the name passed as parameters
+     */
     @GetMapping("/greeting")
     public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
             Model model) {
@@ -33,28 +39,51 @@ public class BookController {
         return "greeting";
     }
 
+    /**
+     *
+     * @return all books
+     */
     @GetMapping
     public Iterable findAll() {
         return bookRepository.findAll();
     }
 
+    /**
+     *
+     * @param bookTitle Title of a book
+     * @return books with the title passed as parameter
+     */
     @GetMapping("/title/{bookTitle}")
     public List findByTitle(@PathVariable String bookTitle) {
         return bookRepository.findByTitle(bookTitle);
     }
 
+    /**
+     *
+     * @param id: Id of a book
+     * @return books with the id passed as parameter
+     */
     @GetMapping("/{id}")
     public Book findOne(@PathVariable Long id) {
         return bookRepository.findById(id)
                 .orElseThrow(BookNotFoundException::new);
     }
 
+    /**
+     *
+     * @param book: book to be created
+     * @return book created
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Book create(@RequestBody Book book) {
         return bookRepository.save(book);
     }
 
+    /**
+     *
+     * @param id: Book Id to be deleted
+     */
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         bookRepository.findById(id)
@@ -62,6 +91,12 @@ public class BookController {
         bookRepository.deleteById(id);
     }
 
+    /**
+     *
+     * @param book: Book to be updated
+     * @param id: Book Id to be updated
+     * @return Book updated
+     */
     @PutMapping("/{id}")
     public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
         if (book.getBookId() != id) {

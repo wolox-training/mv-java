@@ -39,32 +39,18 @@ public class BookController {
         return bookRepository.findByTitle(bookTitle);
     }
 
-    /**
-     *
-     * @param id: Id of a {@link Book}
-     * @return {@link Book} with the id passed as parameter
-     */
     @GetMapping("/{id}")
     public Book findOne(@PathVariable Long id) {
         return bookRepository.findById(id)
                 .orElseThrow(BookNotFoundException::new);
     }
 
-    /**
-     *
-     * @param book: {@link Book} to be created
-     * @return {@link Book} created
-     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Book create(@RequestBody Book book) {
         return bookRepository.save(book);
     }
 
-    /**
-     *
-     * @param id: {@link Book} Id to be deleted
-     */
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         bookRepository.findById(id)
@@ -72,12 +58,6 @@ public class BookController {
         bookRepository.deleteById(id);
     }
 
-    /**
-     *
-     * @param book: {@link Book} to be updated
-     * @param id: {@link Book} Id to be updated
-     * @return {@link Book} updated
-     */
     @PutMapping("/{id}")
     public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
         if (!book.getBookId().equals(id)) {

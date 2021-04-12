@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import wolox.training.exceptions.BookAlreadyOwnedException;
 import wolox.training.exceptions.BookIdMismatchException;
 import wolox.training.exceptions.BookNotFoundException;
 
@@ -37,6 +38,20 @@ public class ErrorHandler {
 
         return new ErrorResponse(ErrorsEnum.JSON_BOOK_ID_MISMATCH_EXCEPTION.getCode(),
                 ErrorsEnum.JSON_BOOK_ID_MISMATCH_EXCEPTION.getMessage());
+    }
+
+    /**
+     *
+     * @param ex: Exception BookAlreadyOwnedException
+     * @return ErrorResponse with the exception code and the message
+     */
+    @ExceptionHandler(BookAlreadyOwnedException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    protected ErrorResponse BookAlreadyOwnedException(BookAlreadyOwnedException ex) {
+
+        return new ErrorResponse(ErrorsEnum.JSON_BOOK_ALREADY_OWNED_EXCEPTION.getCode(),
+                ErrorsEnum.JSON_BOOK_ALREADY_OWNED_EXCEPTION.getMessage());
     }
 
 }

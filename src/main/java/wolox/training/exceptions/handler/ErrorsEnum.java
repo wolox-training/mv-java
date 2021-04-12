@@ -3,7 +3,7 @@ package wolox.training.exceptions.handler;
 public enum ErrorsEnum {
 
     JSON_BOOK_NOT_FOUND_EXCEPTION("404", "Book Not Found"),
-    JSON_BOOK_ID_MISMATCH_EXCEPTION("404", "Book Id Not Found");
+    JSON_BOOK_ID_MISMATCH_EXCEPTION("400", "Book Id Not Found");
 
     private final String code;
     private final String message;

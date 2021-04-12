@@ -22,7 +22,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(BookIdMismatchException.class)
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
     protected ErrorResponse BookIdMismatchException(BookIdMismatchException ex) {
 

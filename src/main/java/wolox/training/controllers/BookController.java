@@ -31,8 +31,8 @@ public class BookController {
 
     /**
      *
-     * @param bookTitle Title of a book
-     * @return books with the title passed as parameter
+     * @param bookTitle Title of a {@link Book}
+     * @return List of {@link Book} with the title passed as parameter
      */
     @GetMapping("/title/{bookTitle}")
     public List<Book> findByTitle(@PathVariable String bookTitle) {
@@ -41,8 +41,8 @@ public class BookController {
 
     /**
      *
-     * @param id: Id of a book
-     * @return books with the id passed as parameter
+     * @param id: Id of a {@link Book}
+     * @return {@link Book} with the id passed as parameter
      */
     @GetMapping("/{id}")
     public Book findOne(@PathVariable Long id) {
@@ -52,8 +52,8 @@ public class BookController {
 
     /**
      *
-     * @param book: book to be created
-     * @return book created
+     * @param book: {@link Book} to be created
+     * @return {@link Book} created
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -63,7 +63,7 @@ public class BookController {
 
     /**
      *
-     * @param id: Book Id to be deleted
+     * @param id: {@link Book} Id to be deleted
      */
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
@@ -74,9 +74,9 @@ public class BookController {
 
     /**
      *
-     * @param book: Book to be updated
-     * @param id: Book Id to be updated
-     * @return Book updated
+     * @param book: {@link Book} to be updated
+     * @param id: {@link Book} Id to be updated
+     * @return {@link Book} updated
      */
     @PutMapping("/{id}")
     public Book updateBook(@RequestBody Book book, @PathVariable Long id) {

@@ -27,7 +27,7 @@ public class ErrorHandler {
 
     /**
      *
-     * @param ex: Exception BookIdMismathException
+     * @param ex: Exception BookIdMismatchException
      * @return ErrorResponse with the exception code and the message
      */
     @ExceptionHandler(BookIdMismatchException.class)

@@ -11,6 +11,11 @@ import wolox.training.exceptions.BookNotFoundException;
 @ControllerAdvice
 public class ErrorHandler {
 
+    /**
+     *
+     * @param ex: Exception BookNotFoundException
+     * @return ErrorResponse with the exception code and the message
+     */
     @ExceptionHandler(BookNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
@@ -20,6 +25,11 @@ public class ErrorHandler {
                 ErrorsEnum.JSON_BOOK_NOT_FOUND_EXCEPTION.getMessage());
     }
 
+    /**
+     *
+     * @param ex: Exception BookIdMismatchException
+     * @return ErrorResponse with the exception code and the message
+     */
     @ExceptionHandler(BookIdMismatchException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody

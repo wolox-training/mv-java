@@ -1,6 +1,5 @@
 package wolox.training.exceptions.handler;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,7 +14,7 @@ public class ErrorHandler {
     @ExceptionHandler(BookNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
-    protected ErrorResponse BookNotFoundException(BookNotFoundException ex) {
+    protected ErrorResponse bookNotFoundException(BookNotFoundException ex) {
 
         return new ErrorResponse(ErrorsEnum.JSON_BOOK_NOT_FOUND_EXCEPTION.getCode(),
                 ErrorsEnum.JSON_BOOK_NOT_FOUND_EXCEPTION.getMessage());
@@ -24,7 +23,7 @@ public class ErrorHandler {
     @ExceptionHandler(BookIdMismatchException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
-    protected ErrorResponse BookIdMismatchException(BookIdMismatchException ex) {
+    protected ErrorResponse bookIdMismatchException(BookIdMismatchException ex) {
 
         return new ErrorResponse(ErrorsEnum.JSON_BOOK_ID_MISMATCH_EXCEPTION.getCode(),
                 ErrorsEnum.JSON_BOOK_ID_MISMATCH_EXCEPTION.getMessage());

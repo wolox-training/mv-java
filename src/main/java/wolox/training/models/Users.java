@@ -10,7 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 
 @Entity
@@ -30,7 +32,11 @@ public class Users {
     private LocalDate birthdate;
 
     @Column(nullable = false)
-    @OneToMany(mappedBy = "user")
+    @ManyToMany
+    @JoinTable(name = "book_user",
+            joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "bookId",
+                    referencedColumnName = "bookId"))
     private List<Book> books = new ArrayList<>();
 
     public Users() {

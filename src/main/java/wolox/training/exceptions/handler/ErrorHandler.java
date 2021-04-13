@@ -28,11 +28,7 @@ public class ErrorHandler {
 
     /**
      *
-<<<<<<< HEAD
      * @param ex: Exception BookIdMismatchException
-=======
-     * @param ex: Exception BookIdMismathException
->>>>>>> create-user-model
      * @return ErrorResponse with the exception code and the message
      */
     @ExceptionHandler(BookIdMismatchException.class)
@@ -40,8 +36,8 @@ public class ErrorHandler {
     @ResponseBody
     protected ErrorResponse bookIdMismatchException(BookIdMismatchException ex) {
 
-        return new ErrorResponse(ErrorsEnum.JSON_BOOK_ID_MISMATCH_EXCEPTION.getCode(),
-                ErrorsEnum.JSON_BOOK_ID_MISMATCH_EXCEPTION.getMessage());
+        return new ErrorResponse(ErrorsEnum.JSON_BOOK_BAD_REQUEST_EXCEPTION.getCode(),
+                ErrorsEnum.JSON_BOOK_BAD_REQUEST_EXCEPTION.getMessage());
     }
 
     /**
@@ -52,10 +48,10 @@ public class ErrorHandler {
     @ExceptionHandler(BookAlreadyOwnedException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
-    protected ErrorResponse BookAlreadyOwnedException(BookAlreadyOwnedException ex) {
+    protected ErrorResponse bookAlreadyOwnedException(BookAlreadyOwnedException ex) {
 
-        return new ErrorResponse(ErrorsEnum.JSON_BOOK_ALREADY_OWNED_EXCEPTION.getCode(),
-                ErrorsEnum.JSON_BOOK_ALREADY_OWNED_EXCEPTION.getMessage());
+        return new ErrorResponse(ErrorsEnum.JSON_BOOK_BAD_REQUEST_EXCEPTION.getCode(),
+                ErrorsEnum.JSON_BOOK_BAD_REQUEST_EXCEPTION.getMessage());
     }
 
 }

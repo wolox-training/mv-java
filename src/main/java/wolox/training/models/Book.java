@@ -1,12 +1,12 @@
 package wolox.training.models;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Book {
@@ -42,9 +42,8 @@ public class Book {
     @Column(nullable = false)
     private String isbn;
 
-    @ManyToOne
-    @JoinColumn(name = "userId")
-    private Users user;
+    @ManyToMany(mappedBy = "books")
+    private List<Users> users;
 
     public Book() {
 
@@ -124,6 +123,14 @@ public class Book {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    public List<Users> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<Users> users) {
+        this.users = users;
     }
 }
 

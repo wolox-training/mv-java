@@ -28,7 +28,11 @@ public class ErrorHandler {
 
     /**
      *
+<<<<<<< HEAD
      * @param ex: Exception BookIdMismatchException
+=======
+     * @param ex: Exception BookIdMismathException
+>>>>>>> create-user-model
      * @return ErrorResponse with the exception code and the message
      */
     @ExceptionHandler(BookIdMismatchException.class)

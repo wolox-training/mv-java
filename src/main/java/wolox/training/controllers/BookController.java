@@ -1,5 +1,9 @@
 package wolox.training.controllers;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,12 +23,18 @@ import wolox.training.repositories.BookRepository;
 
 @RestController
 @RequestMapping("/api/books")
+@Api
 public class BookController {
 
     @Autowired
     private BookRepository bookRepository;
 
     @GetMapping
+    @ApiOperation(value = "List all Books")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Books found"),
+            @ApiResponse(code = 404, message = "Books not found")
+    })
     public List<Book> findAll() {
         return bookRepository.findAll();
     }
@@ -35,6 +45,11 @@ public class BookController {
      * @return List of {@link Book} with the title passed as parameter
      */
     @GetMapping("/title/{bookTitle}")
+    @ApiOperation(value = "List all Books by Book Title")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Books found"),
+            @ApiResponse(code = 404, message = "Books not found")
+    })
     public List<Book> findByTitle(@PathVariable String bookTitle) {
         return bookRepository.findByTitle(bookTitle);
     }
@@ -45,6 +60,11 @@ public class BookController {
      * @return books with the id passed as parameter
      */
     @GetMapping("/{id}")
+    @ApiOperation(value = "Giving an Id, return the book")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Book found"),
+            @ApiResponse(code = 404, message = "Book not found")
+    })
     public Book findOne(@PathVariable Long id) {
         return bookRepository.findById(id)
                 .orElseThrow(BookNotFoundException::new);
@@ -57,6 +77,11 @@ public class BookController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Create a book")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Book created"),
+            @ApiResponse(code = 404, message = "Book not created")
+    })
     public Book create(@RequestBody Book book) {
         return bookRepository.save(book);
     }
@@ -66,6 +91,11 @@ public class BookController {
      * @param id: Book Id to be deleted
      */
     @DeleteMapping("/{id}")
+    @ApiOperation(value = "Delete a Book")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Book deleted"),
+            @ApiResponse(code = 404, message = "Book not found")
+    })
     public void delete(@PathVariable Long id) {
         bookRepository.findById(id)
                 .orElseThrow(BookNotFoundException::new);
@@ -79,6 +109,11 @@ public class BookController {
      * @return Book updated
      */
     @PutMapping("/{id}")
+    @ApiOperation(value = "Update a Book")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Book updated"),
+            @ApiResponse(code = 404, message = "Book not found")
+    })
     public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
         if (!book.getBookId().equals(id)) {
             throw new BookIdMismatchException();

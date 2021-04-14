@@ -1,5 +1,7 @@
 package wolox.training.models;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 @Entity
+@ApiModel(description = "Books from the OpenLibraryAPI")
 public class Book {
 
     @Id
@@ -16,15 +19,18 @@ public class Book {
     private Long bookId;
 
     @Column(nullable = true)
+    @ApiModelProperty(notes = "The book genre: could be horror, comedy, drama, etc")
     private String genre;
 
     @Column(nullable = false)
+    @ApiModelProperty(notes = "Name of the book author")
     private String author;
 
     @Column(nullable = false)
     private String image;
 
     @Column(nullable = false)
+    @ApiModelProperty(notes = "Title of the book")
     private String title;
 
     @Column(nullable = false)
@@ -34,9 +40,11 @@ public class Book {
     private String publisher;
 
     @Column(nullable = false)
+    @ApiModelProperty(notes = "Year of the book")
     private String year;
 
     @Column(nullable = false)
+    @ApiModelProperty(notes = "Number of pages of the book")
     private String pages;
 
     @Column(nullable = false)

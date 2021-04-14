@@ -1,5 +1,6 @@
 package wolox.training.models;
 
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.List;
@@ -74,6 +75,8 @@ public class Book {
     }
 
     public void setAuthor(String author) {
+
+        Preconditions.checkNotNull(author, "Please check the String author supplied, its null!");
         this.author = author;
     }
 
@@ -82,6 +85,8 @@ public class Book {
     }
 
     public void setImage(String image) {
+
+        Preconditions.checkNotNull(image, "Please check the String image supplied, its null!");
         this.image = image;
     }
 
@@ -90,6 +95,8 @@ public class Book {
     }
 
     public void setTitle(String title) {
+
+        Preconditions.checkNotNull(title, "Please check the String title supplied, its null!");
         this.title = title;
     }
 
@@ -98,6 +105,8 @@ public class Book {
     }
 
     public void setSubtitle(String subtitle) {
+
+        Preconditions.checkNotNull(subtitle, "Please check the String subtitle supplied, its null!");
         this.subtitle = subtitle;
     }
 
@@ -106,6 +115,8 @@ public class Book {
     }
 
     public void setPublisher(String publisher) {
+
+        Preconditions.checkNotNull(publisher, "Please check the String publisher supplied, its null!");
         this.publisher = publisher;
     }
 
@@ -114,6 +125,8 @@ public class Book {
     }
 
     public void setYear(String year) {
+
+        Preconditions.checkNotNull(year, "Please check the String year supplied, its null!");
         this.year = year;
     }
 
@@ -122,6 +135,8 @@ public class Book {
     }
 
     public void setPages(String pages) {
+
+        Preconditions.checkNotNull(pages, "Please check the String pages supplied, its null!");
         this.pages = pages;
     }
 
@@ -130,6 +145,8 @@ public class Book {
     }
 
     public void setIsbn(String isbn) {
+
+        Preconditions.checkNotNull(isbn, "Please check the String isbn supplied, its null!");
         this.isbn = isbn;
     }
 
@@ -138,6 +155,8 @@ public class Book {
     }
 
     public void setUsers(List<Users> users) {
+
+        Preconditions.checkNotNull(users, "Please check the List of Users supplied, its null!");
         this.users = users;
     }
 }

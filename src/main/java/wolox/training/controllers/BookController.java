@@ -31,13 +31,8 @@ public class BookController {
 
     /**
      *
-<<<<<<< HEAD
      * @param bookTitle Title of a {@link Book}
      * @return List of {@link Book} with the title passed as parameter
-=======
-     * @param bookTitle Title of a book
-     * @return books with the title passed as parameter
->>>>>>> create-user-model
      */
     @GetMapping("/title/{bookTitle}")
     public List<Book> findByTitle(@PathVariable String bookTitle) {

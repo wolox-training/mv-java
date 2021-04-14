@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import wolox.training.exceptions.BookAlreadyOwnedException;
+import wolox.training.exceptions.BookNotFoundException;
 
 @Entity
 public class Users {
@@ -33,11 +34,7 @@ public class Users {
 
     @Column(nullable = false)
     @ManyToMany
-    @JoinTable(name = "book_user",
-            joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"),
-            inverseJoinColumns = @JoinColumn(name = "bookId",
-                    referencedColumnName = "bookId"))
-    private List<Book> books = new ArrayList<>();
+    private List<Book> books = Collections.emptyList();
 
     public Users() {
 
@@ -72,7 +69,7 @@ public class Users {
     }
 
     public List<Book> getBooks() {
-        return (List<Book>) Collections.unmodifiableList(books);
+        return Collections.unmodifiableList(books);
     }
 
     public void setBooks(List<Book> books) {
@@ -93,7 +90,8 @@ public class Users {
     }
 
     public Book filterBookById(Long bookId) {
-        return books.stream().filter(book -> (bookId).equals(book.getBookId())).collect(Collectors.toList()).get(0);
+        return books.stream().filter(book -> bookId.equals(book.getBookId())).findFirst().orElseThrow(
+                BookNotFoundException::new);
     }
 
 }

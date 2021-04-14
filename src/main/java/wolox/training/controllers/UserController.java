@@ -1,6 +1,7 @@
 package wolox.training.controllers;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,7 +37,7 @@ public class UserController {
      * @return {@link Users} with the name passed as parameter
      */
     @GetMapping("/name/{userName}")
-    public Users findByName(@PathVariable String userName) {
+    public Optional<Users> findByName(@PathVariable String userName) {
         return userRepository.findByName(userName);
     }
 

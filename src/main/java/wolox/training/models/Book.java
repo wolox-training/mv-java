@@ -18,7 +18,6 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long bookId;
 
-    @Column(nullable = true)
     @ApiModelProperty(notes = "The book genre: could be horror, comedy, drama, etc")
     private String genre;
 

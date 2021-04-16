@@ -32,8 +32,7 @@ public class BookController {
     @GetMapping
     @ApiOperation(value = "List all Books")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Books found"),
-            @ApiResponse(code = 404, message = "Books not found")
+            @ApiResponse(code = 200, message = "Books found")
     })
     public List<Book> findAll() {
         return bookRepository.findAll();
@@ -47,8 +46,7 @@ public class BookController {
     @GetMapping("/title/{bookTitle}")
     @ApiOperation(value = "List all Books by Book Title")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Books found"),
-            @ApiResponse(code = 404, message = "Books not found")
+            @ApiResponse(code = 200, message = "Books found")
     })
     public List<Book> findByTitle(@PathVariable String bookTitle) {
         return bookRepository.findByTitle(bookTitle);
@@ -112,7 +110,8 @@ public class BookController {
     @ApiOperation(value = "Update a Book")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Book updated"),
-            @ApiResponse(code = 404, message = "Book not found")
+            @ApiResponse(code = 404, message = "Book not found"),
+            @ApiResponse(code = 400, message = "Bad Request")
     })
     public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
         if (!book.getBookId().equals(id)) {

@@ -37,8 +37,16 @@ public class UserController {
      * @return {@link Users} with the name passed as parameter
      */
     @GetMapping("/name/{userName}")
-    public Optional<Users> findByName(@PathVariable String userName) {
-        return userRepository.findByName(userName);
+    public Users findByName(@PathVariable String userName) {
+
+        Users user;
+        try {
+            user = userRepository.findByName(userName);
+        } catch(Exception e) {
+            throw new UserNotFoundException();
+        }
+
+        return user;
     }
 
     /**

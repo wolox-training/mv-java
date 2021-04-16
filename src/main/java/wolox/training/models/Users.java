@@ -68,6 +68,7 @@ public class Users {
     public void setBirthdate(LocalDate birthdate) {
 
         Preconditions.checkNotNull(birthdate, "Please check the LocalDate birthdate supplied, its null!");
+        Preconditions.checkArgument(birthdate.isBefore(LocalDate.now()));
         this.birthdate = birthdate;
     }
 

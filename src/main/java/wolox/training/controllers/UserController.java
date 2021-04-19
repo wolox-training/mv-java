@@ -38,7 +38,6 @@ public class UserController {
      */
     @GetMapping("/name/{userName}")
     public Users findByName(@PathVariable String userName) {
-
         return userRepository.findByName(userName)
                 .orElseThrow(UserNotFoundException::new);
     }

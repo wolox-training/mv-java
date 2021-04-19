@@ -3,7 +3,8 @@ package wolox.training.exceptions.handler;
 public enum ErrorsEnum {
 
     JSON_BOOK_NOT_FOUND_EXCEPTION("404", "Book Not Found"),
-    JSON_BOOK_BAD_REQUEST_EXCEPTION("400", "Bad Request");
+    JSON_BAD_REQUEST_EXCEPTION("400", "Bad Request"),
+    JSON_USER_NOT_FOUND_EXCEPTION("404", "User Not Found");
 
     private final String code;
     private final String message;

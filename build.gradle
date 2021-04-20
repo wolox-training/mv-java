@@ -26,6 +26,8 @@ dependencies {
 	compile group: 'com.google.guava', name: 'guava', version: '27.0-jre'
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testCompile('com.h2database:h2')
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-test'
 }
 
 test {

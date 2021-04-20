@@ -1,21 +1,17 @@
 package wolox.training.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import wolox.training.controllers.BookController;
 import wolox.training.models.Book;
 
 @DataJpaTest
+@ExtendWith(SpringExtension.class)
 public class BookRepositoryTest {
 
     @Autowired
@@ -23,7 +19,7 @@ public class BookRepositoryTest {
 
     private Book oneTestBook;
 
-    @BeforeEach
+    @Before
     public void setUp() {
         oneTestBook = new Book();
         oneTestBook.setAuthor("Stephen King");
@@ -40,8 +36,16 @@ public class BookRepositoryTest {
 
     @Test
     public void whenCreateBook_thenBookIsPersisted() {
-        Book persistedBook = bookRepository.save(oneTestBook);
-        assertNotNull(persistedBook);
+        Book persistedBook = bookRepository.findByTitle("It")
+                .stream().findFirst().orElse(new Book());
+
+        assertThat(persistedBook.getTitle().equals(oneTestBook.getTitle())).isTrue();
+        assertThat(persistedBook.getAuthor().equals(oneTestBook.getAuthor())).isTrue();
+        assertThat(persistedBook.getGenre().equals(oneTestBook.getGenre())).isTrue();
+        assertThat(persistedBook.getImage().equals(oneTestBook.getImage())).isTrue();
+        assertThat(persistedBook.getIsbn().equals(oneTestBook.getIsbn())).isTrue();
+        assertThat(persistedBook.getPages().equals(oneTestBook.getPages())).isTrue();
+
     }
 
 }

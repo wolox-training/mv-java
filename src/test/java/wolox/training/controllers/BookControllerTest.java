@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,18 @@ public class BookControllerTest {
 
     private Book oneTestBook;
 
+    private String bookJson = "{\"bookId\":null,\"genre\":\"Terror\","
+            + "\"author\":\"Stephen King\",\"image\":\"https://imagesforus.com/idsarf12.png\""
+            + ",\"title\":\"It\",\"subtitle\":\"Worst Clown Ever\",\"publisher\":"
+            + "\"Viking Press\",\"year\":\"1986\",\"pages\":\"1500\",\"isbn\":\"4578-245654\","
+            + "\"users\":null}]}";
+
+    private String listOfBookJson = "[{\"bookId\":null,\"genre\":\"Terror\","
+            + "\"author\":\"Stephen King\",\"image\":\"https://imagesforus.com/idsarf12.png\""
+            + ",\"title\":\"It\",\"subtitle\":\"Worst Clown Ever\",\"publisher\":"
+            + "\"Viking Press\",\"year\":\"1986\",\"pages\":\"1500\",\"isbn\":\"4578-245654\","
+            + "\"users\":null}]]}";
+
     @BeforeEach
     public void setUp() {
         oneTestBook = new Book();
@@ -44,62 +57,40 @@ public class BookControllerTest {
     }
 
     @Test
-    public void whenFindByIdWhichExists_thenBookIsReturned() throws Exception {
+    public void givenExistingId_whenFindById_thenBookIsReturned() throws Exception {
         Mockito.when(mockBookRepository.findById(1L)).thenReturn(java.util.Optional.ofNullable(oneTestBook));
-        String url = ("/api/books/1");
+        String url = "/api/books/1";
         mvc.perform(get(url)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(
-                        "{\"bookId\":null,\"genre\":\"Terror\","
-                        + "\"author\":\"Stephen King\",\"image\":\"https://imagesforus.com/idsarf12.png\""
-                        + ",\"title\":\"It\",\"subtitle\":\"Worst Clown Ever\",\"publisher\":"
-                        + "\"Viking Press\",\"year\":\"1986\",\"pages\":\"1500\",\"isbn\":\"4578-245654\","
-                        + "\"users\":null}]}"
-                ));
+                .andExpect(content().json(bookJson));
 
     }
 
     @Test
     public void whenFindAllBooksWhichExists_thenBooksIsReturned() throws Exception {
-        List<Book> books = new ArrayList<>();
-        books.add(oneTestBook);
+        List<Book> books = Arrays.asList(oneTestBook);
 
         Mockito.when(mockBookRepository.findAll()).thenReturn(books);
-        String url = ("/api/books");
+        String url = "/api/books";
         mvc.perform(get(url)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(
-                        "[{\"bookId\":null,\"genre\":\"Terror\","
-                                + "\"author\":\"Stephen King\",\"image\":\"https://imagesforus.com/idsarf12.png\""
-                                + ",\"title\":\"It\",\"subtitle\":\"Worst Clown Ever\",\"publisher\":"
-                                + "\"Viking Press\",\"year\":\"1986\",\"pages\":\"1500\",\"isbn\":\"4578-245654\","
-                                + "\"users\":null}]]}"
-                ));
+                .andExpect(content().json(listOfBookJson));
 
     }
 
     @Test
-    public void whenFindByTitleBooksWhichExists_thenBookIsReturned() throws Exception {
+    public void givenExistingTitle_whenFindByTitle_thenBookIsReturned() throws Exception {
         List<Book> books = new ArrayList<>();
         books.add(oneTestBook);
 
         Mockito.when(mockBookRepository.findByTitle("Stephen King")).thenReturn(books);
-        String url = ("/api/books/title/Stephen King");
+        String url = "/api/books/title/Stephen King";
         mvc.perform(get(url)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(
-                        "[{\"bookId\":null,\"genre\":\"Terror\","
-                                + "\"author\":\"Stephen King\",\"image\":\"https://imagesforus.com/idsarf12.png\""
-                                + ",\"title\":\"It\",\"subtitle\":\"Worst Clown Ever\",\"publisher\":"
-                                + "\"Viking Press\",\"year\":\"1986\",\"pages\":\"1500\",\"isbn\":\"4578-245654\","
-                                + "\"users\":null}]]}"
-                ));
+                .andExpect(content().json(listOfBookJson));
 
     }
-
-
-
 }

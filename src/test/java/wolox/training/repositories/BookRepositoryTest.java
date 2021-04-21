@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
 
 @DataJpaTest
@@ -37,7 +38,7 @@ public class BookRepositoryTest {
     @Test
     public void whenCreateBook_thenBookIsPersisted() {
         Book persistedBook = bookRepository.findByTitle("It")
-                .stream().findFirst().orElse(new Book());
+                .stream().findFirst().orElseThrow(BookNotFoundException::new);
 
         assertThat(persistedBook.getTitle().equals(oneTestBook.getTitle())).isTrue();
         assertThat(persistedBook.getAuthor().equals(oneTestBook.getAuthor())).isTrue();

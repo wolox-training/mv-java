@@ -40,7 +40,7 @@ public class BookControllerTest {
     private String listOfBookJson = "[{\"bookId\":null,\"genre\":\"Terror\","
             + "\"author\":\"Stephen King\",\"image\":\"https://imagesforus.com/idsarf12.png\""
             + ",\"title\":\"It\",\"subtitle\":\"Worst Clown Ever\",\"publisher\":"
-            + "\"Viking Press\",\"year\":\"1986\",\"pages\":\"1500\",\"isbn\":\"4578-245654\","
+            + "\"Viking Press\",\"year\":\"1986\",\"pages\":1500,\"isbn\":\"4578-245654\","
             + "\"users\":null}]]}";
 
     @BeforeEach
@@ -50,7 +50,7 @@ public class BookControllerTest {
         oneTestBook.setGenre("Terror");
         oneTestBook.setImage("https://imagesforus.com/idsarf12.png");
         oneTestBook.setIsbn("4578-245654");
-        oneTestBook.setPages("1500");
+        oneTestBook.setPages(1500L);
         oneTestBook.setPublisher("Viking Press");
         oneTestBook.setSubtitle("Worst Clown Ever");
         oneTestBook.setTitle("It");

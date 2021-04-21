@@ -27,7 +27,7 @@ public class BookRepositoryTest {
         oneTestBook.setGenre("Terror");
         oneTestBook.setImage("https://imagesforus.com/idsarf12.png");
         oneTestBook.setIsbn("4578-245654");
-        oneTestBook.setPages("1500");
+        oneTestBook.setPages(1500L);
         oneTestBook.setPublisher("Viking Press");
         oneTestBook.setSubtitle("Worst Clown Ever");
         oneTestBook.setTitle("It");

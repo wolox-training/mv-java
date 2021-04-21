@@ -5,8 +5,10 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,12 +16,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import wolox.training.exceptions.BookIdMismatchException;
 import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
 import wolox.training.repositories.BookRepository;
+import wolox.training.services.OpenLibraryService;
 
 @RestController
 @RequestMapping("/api/books")
@@ -28,6 +32,9 @@ public class BookController {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private OpenLibraryService openLibraryService;
 
     @GetMapping
     @ApiOperation(value = "List all Books")
@@ -120,6 +127,29 @@ public class BookController {
         bookRepository.findById(id)
                 .orElseThrow(BookNotFoundException::new);
         return bookRepository.save(book);
+    }
+
+    /**
+     *
+     * @param isbn: isbn of a book
+     * @return {@link Book} by ISBN
+     */
+    @GetMapping("/isbn")
+    @ApiOperation(value = "Giving an isbn, return the book")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Book found"),
+            @ApiResponse(code = 404, message = "Book not found")
+    })
+    public ResponseEntity<Book> getBookByISBN(@RequestParam Long isbn) {
+
+        Optional<Book> book = bookRepository.findByisbn(isbn);
+
+        if(!book.isPresent()) {
+            return new ResponseEntity<>(bookRepository.save(openLibraryService.bookInfo(isbn).get())
+                    , HttpStatus.CREATED);
+        }
+
+        return new ResponseEntity<>(book.get(), HttpStatus.OK);
     }
 
 }

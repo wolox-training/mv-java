@@ -45,7 +45,7 @@ public class Book {
 
     @Column(nullable = false)
     @ApiModelProperty(notes = "Number of pages of the book")
-    private String pages;
+    private Long pages;
 
     @Column(nullable = false)
     private String isbn;
@@ -129,13 +129,13 @@ public class Book {
         this.year = year;
     }
 
-    public String getPages() {
+    public Long getPages() {
         return pages;
     }
 
-    public void setPages(String pages) {
+    public void setPages(Long pages) {
 
-        Preconditions.checkNotNull(pages, "Please check the String pages supplied, its null!");
+        Preconditions.checkNotNull(pages, "Please check the Long pages supplied, its null!");
         this.pages = pages;
     }
 

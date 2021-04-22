@@ -159,7 +159,7 @@ public class BookController {
      * @param year: {@link Book} year
      * @return List of {@link Book}
      */
-    @GetMapping
+    @GetMapping("/specific")
     @ApiOperation(value = "Giving an publisher, genre and year, return the books")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Book found"),

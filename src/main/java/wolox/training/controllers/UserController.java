@@ -148,14 +148,14 @@ public class UserController {
      *
      * @param startDate: initial date for search {@link Users}
      * @param endDate: final date for search {@link Users}
-     * @param secuence: {@link Users} name character sequence
+     * @param sequence: {@link Users} name character sequence
      * @return List of {@link Users}
      */
-    @GetMapping
+    @GetMapping("/specific")
     public List<Users> getUsersByBirthdateAndCharacterSequenceName(@RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate, @RequestParam String secuence) {
+            @RequestParam LocalDate endDate, @RequestParam String sequence) {
 
-        return userRepository.findByBirthdateBetweenAndNameSequence(startDate, endDate, secuence);
+        return userRepository.findByNameIgnoreCaseContainingAndBirthdateBetween(startDate, endDate, sequence);
     }
 
 

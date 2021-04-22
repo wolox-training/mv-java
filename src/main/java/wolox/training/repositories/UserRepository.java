@@ -13,7 +13,7 @@ public interface UserRepository extends JpaRepository<Users, Long> {
 
     Optional<Users> findByName(String name);
 
-    List<Users> findByBirthdateBetweenAndNameSequence(LocalDate startDate,
+    List<Users> findByNameIgnoreCaseContainingAndBirthdateBetween(LocalDate startDate,
             LocalDate endDate, String sequence);
 
 }

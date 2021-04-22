@@ -1,5 +1,11 @@
 package wolox.training.services;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.HashMap;
 import java.util.Optional;
 import javax.swing.text.html.Option;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +25,30 @@ public class OpenLibraryService {
     @Autowired
     RestTemplate restTemplate;
 
-    public Optional<Book> bookInfo(Long isbn) {
+    public Optional<Book> bookInfo(String isbn) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
+        objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
         String queryParam = "ISBN:" + isbn;
         String url = String.format(externalApiUrl, queryParam);
         Book book = new Book();
 
         try {
-            BookInfoDTO bookInfoDTO = restTemplate.getForObject(url, BookInfoDTO.class);
-            adaptBookInfoToBookModel(bookInfoDTO, book);
+            /*BookInfoDTO bookInfoDTO = restTemplate.getForObject(url, BookInfoDTO.class);*/
+            JsonNode bookInfoJsonNode = objectMapper
+                    .readTree(restTemplate.getForObject(url, String.class));
+            HashMap<String, Object> map = objectMapper
+                    .treeToValue(bookInfoJsonNode.get(queryParam), HashMap.class);
+            BookInfoDTO bookInfo = objectMapper.convertValue(map, BookInfoDTO.class);
+
+            if (bookInfo != null) {
+                bookInfo.setIsbn(isbn);
+            }
+
+            adaptBookInfoToBookModel(bookInfo, book);
         } catch (Exception e) {
             throw new BookNotFoundException();
         }

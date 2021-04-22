@@ -1,7 +1,12 @@
 package wolox.training.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
 
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,6 +52,13 @@ public class BookRepositoryTest {
         assertThat(persistedBook.getIsbn().equals(oneTestBook.getIsbn())).isTrue();
         assertThat(persistedBook.getPages().equals(oneTestBook.getPages())).isTrue();
 
+    }
+
+    @Test
+    public void testingFindByPublisherAndGenreAndYearMethod(){
+        bookRepository.save(oneTestBook);
+        List<Book> books = bookRepository.findByPublisherAndGenreAndYear("Viking Press", "Terror", "1986");
+        assertThat(books, is(not(empty())));
     }
 
 }

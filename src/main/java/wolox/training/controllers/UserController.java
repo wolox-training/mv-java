@@ -1,5 +1,6 @@
 package wolox.training.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -141,4 +143,20 @@ public class UserController {
     public String currentUserName(Authentication authentication) {
         return authentication.getName();
     }
+
+    /**
+     *
+     * @param startDate: initial date for search {@link Users}
+     * @param endDate: final date for search {@link Users}
+     * @param secuence: {@link Users} name character sequence
+     * @return List of {@link Users}
+     */
+    @GetMapping
+    public List<Users> getUsersByBirthdateAndCharacterSequenceName(@RequestParam LocalDate startDate,
+            @RequestParam LocalDate endDate, @RequestParam String secuence) {
+
+        return userRepository.findByBirthdateBetweenAndNameSequence(startDate, endDate, secuence);
+    }
+
+
 }

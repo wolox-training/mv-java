@@ -172,4 +172,20 @@ public class UserController {
     public String currentUserName(Authentication authentication) {
         return authentication.getName();
     }
+
+    /**
+     *
+     * @param startDate: initial date for search {@link Users}
+     * @param endDate: final date for search {@link Users}
+     * @param secuence: {@link Users} name character sequence
+     * @return List of {@link Users}
+     */
+    @GetMapping
+    public List<Users> getUsersByBirthdateAndCharacterSequenceName(@RequestParam LocalDate startDate,
+            @RequestParam LocalDate endDate, @RequestParam String secuence) {
+
+        return userRepository.findByBirthdateBetweenAndNameSequence(startDate, endDate, secuence);
+    }
+
+
 }

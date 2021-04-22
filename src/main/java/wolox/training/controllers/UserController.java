@@ -163,6 +163,11 @@ public class UserController {
         return userRepository.save(user);
     }
 
+    /**
+     *
+     * @param authentication: login {@link Users}
+     * @return login {@link Users} name
+     */
     @GetMapping("/username")
     public String currentUserName(Authentication authentication) {
         return authentication.getName();

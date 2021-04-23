@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.util.List;
 import java.util.Optional;
-import org.aspectj.apache.bcel.classfile.Module.Require;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +52,8 @@ public class BookController {
             @RequestParam(required = false) Long pages,
             @RequestParam(required = false) String isbn
             ) {
-        return bookRepository.findAll();
+        return bookRepository.findAll(bookId, genre, author, image, title, subtitle, publisher,
+                year, pages, isbn);
     }
 
     /**

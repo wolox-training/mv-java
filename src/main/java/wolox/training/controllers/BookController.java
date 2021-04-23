@@ -4,9 +4,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,33 +42,37 @@ public class BookController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Books found")
     })
-    public List<Book> findAll(@RequestParam(required = false) Long bookId,
+    public Page<Book> findAll(@RequestParam(required = false) Long bookId,
             @RequestParam(required = false) String genre,
             @RequestParam(required = false) String author,
-            @RequestParam(required = false)String image,
+            @RequestParam(required = false) String image,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String subtitle,
             @RequestParam(required = false) String publisher,
             @RequestParam(required = false) String year,
             @RequestParam(required = false) Long pages,
-            @RequestParam(required = false) String isbn
+            @RequestParam(required = false) String isbn,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size
             ) {
-        return bookRepository.findAll(bookId, genre, author, image, title, subtitle, publisher,
-                year, pages, isbn);
+        return bookRepository.findAll(bookId, genre, author, image, title, subtitle, publisher, year,
+                pages, isbn, PageRequest.of(page, size));
     }
 
     /**
      *
      * @param bookTitle Title of a {@link Book}
-     * @return List of {@link Book} with the title passed as parameter
+     * @return Page of {@link Book} with the title passed as parameter
      */
     @GetMapping("/title/{bookTitle}")
     @ApiOperation(value = "List all Books by Book Title")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Books found")
     })
-    public List<Book> findByTitle(@PathVariable String bookTitle) {
-        return bookRepository.findByTitle(bookTitle);
+    public Page<Book> findByTitle(@PathVariable String bookTitle,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size) {
+        return bookRepository.findByTitle(bookTitle, PageRequest.of(page, size));
     }
 
     /**
@@ -168,7 +173,7 @@ public class BookController {
      * @param publisher: {@link Book} publisher
      * @param genre: {@link Book} genre
      * @param year: {@link Book} year
-     * @return List of {@link Book}
+     * @return Page of {@link Book}
      */
     @GetMapping("/specific")
     @ApiOperation(value = "Giving an publisher, genre and year, return the books")
@@ -176,11 +181,13 @@ public class BookController {
             @ApiResponse(code = 200, message = "Book found"),
             @ApiResponse(code = 404, message = "Book not found")
     })
-    public List<Book> getBookByPublisherAndGenreAndYear(@RequestParam(required = false)
+    public Page<Book> getBookByPublisherAndGenreAndYear(@RequestParam(required = false)
             String publisher, @RequestParam(required = false) String genre,
-            @RequestParam(required = false) String year) {
+            @RequestParam(required = false) String year,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size) {
 
-        return bookRepository.findByPublisherAndGenreAndYear(publisher, genre, year);
+        return bookRepository.findByPublisherAndGenreAndYear(publisher, genre, year, PageRequest.of(page, size));
     }
 
 }

@@ -1,18 +1,16 @@
 package wolox.training.repositories;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.time.LocalDate;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import wolox.training.models.Users;
 
@@ -48,19 +46,20 @@ public class UserRepositoryTest {
     @Test
     public void whenfindByNameIgnoreCaseContainingAndBirthdateBetweenMethod_theUsersIsReturned(){
         userRepository.save(oneTestUser);
-        List<Users> users = userRepository.findByNameIgnoreCaseContainingAndBirthdateBetween
+        Page<Users> users = userRepository.findByNameIgnoreCaseContainingAndBirthdateBetween
                 (LocalDate.of(1996,4,11),
-                        LocalDate.of(1996,6,11), "TIAS" );
-        assertThat(users, is(not(empty())));
+                        LocalDate.of(1996,6,11), "TIAS", PageRequest.of(0,3));
+        assertEquals(users.getTotalElements(), 1);
     }
 
     @Test
     public void whenfindByNameIgnoreCaseContainingNullAndDateNull_theUsersIsReturned() {
         userRepository.save(oneTestUser);
-        List<Users> users = userRepository.
+        Page<Users> users = userRepository.
                 findByNameIgnoreCaseContainingAndBirthdateBetween(null,
                         null,
-                        null);
-        assertThat(users, is(not(empty())));
+                        null,
+                        PageRequest.of(0, 3));
+        assertEquals(users.getTotalElements(), 1);
     }
 }

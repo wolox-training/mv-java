@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -75,20 +76,6 @@ public class BookControllerTest {
 
         Mockito.when(mockBookRepository.findAll()).thenReturn(books);
         String url = "/api/books";
-        mvc.perform(get(url)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(listOfBookJson));
-
-    }
-
-    @Test
-    public void givenExistingTitle_whenFindByTitle_thenBookIsReturned() throws Exception {
-        List<Book> books = new ArrayList<>();
-        books.add(oneTestBook);
-
-        Mockito.when(mockBookRepository.findByTitle("Stephen King")).thenReturn(books);
-        String url = "/api/books/title/Stephen King";
         mvc.perform(get(url)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

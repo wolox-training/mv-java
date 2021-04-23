@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.apache.catalina.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import wolox.training.models.Users;
 
@@ -18,7 +19,7 @@ public interface UserRepository extends JpaRepository<Users, Long> {
             + "like lower(concat('%', :sequence,'%')))"
             + " and (:startDate IS NULL OR :endDate IS NULL "
             + "OR u.birthdate BETWEEN :startDate AND :endDate)")
-    List<Users> findByNameIgnoreCaseContainingAndBirthdateBetween(LocalDate startDate,
-            LocalDate endDate, String sequence);
+    List<Users> findByNameIgnoreCaseContainingAndBirthdateBetween(@Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate, @Param("sequence") String sequence);
 
 }

@@ -61,4 +61,12 @@ public class BookRepositoryTest {
         assertThat(books, is(not(empty())));
     }
 
+    @Test
+    public void givenAnExistingTitle_whenFindAll_thenBooksIsReturned() {
+        bookRepository.save(oneTestBook);
+        List<Book> books = bookRepository.findAll(null, null, null, null,
+                "Viking Press", null, null, null, null, null);
+        assertThat(books, is(not(empty())));
+    }
+
 }

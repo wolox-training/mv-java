@@ -5,8 +5,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,8 +48,10 @@ public class UserController {
     }
 
     @GetMapping
-    public List<Users> findAll() {
-        return userRepository.findAll();
+    public Page<Users> findAll(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(defaultValue = "userId") String sort) {
+        return userRepository.findAll(PageRequest.of(page, size, Sort.by(sort)));
     }
 
     /**
@@ -180,15 +184,17 @@ public class UserController {
      * @param endDate:   final date for search {@link Users}
      * @param sequence:  {@link Users} name character sequence
      *
-     * @return List of {@link Users}
+     * @return Page of {@link Users}
      */
     @GetMapping("/specific")
-    public List<Users> getUsersByBirthdateAndCharacterSequenceName(
+    public Page<Users> getUsersByBirthdateAndCharacterSequenceName(
             @RequestParam(required = false) LocalDate startDate,
             @RequestParam(required = false) LocalDate endDate,
-            @RequestParam(required = false) String sequence) {
+            @RequestParam(required = false) String sequence,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size) {
 
-        return userRepository.findByNameIgnoreCaseContainingAndBirthdateBetween(startDate, endDate, sequence);
+        return userRepository.findByNameIgnoreCaseContainingAndBirthdateBetween(startDate, endDate, sequence, PageRequest.of(0,3));
     }
 
 

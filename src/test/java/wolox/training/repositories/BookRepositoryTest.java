@@ -1,17 +1,14 @@
 package wolox.training.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import java.util.List;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
@@ -42,7 +39,7 @@ public class BookRepositoryTest {
 
     @Test
     public void whenCreateBook_thenBookIsPersisted() {
-        Book persistedBook = bookRepository.findByTitle("It")
+        Book persistedBook = bookRepository.findByTitle("It", PageRequest.of(0, 3))
                 .stream().findFirst().orElseThrow(BookNotFoundException::new);
 
         assertThat(persistedBook.getTitle().equals(oneTestBook.getTitle())).isTrue();
@@ -57,16 +54,18 @@ public class BookRepositoryTest {
     @Test
     public void testingFindByPublisherAndGenreAndYearMethod(){
         bookRepository.save(oneTestBook);
-        List<Book> books = bookRepository.findByPublisherAndGenreAndYear("Viking Press", "Terror", "1986");
-        assertThat(books, is(not(empty())));
+        Page<Book> books = bookRepository.findByPublisherAndGenreAndYear("Viking Press",
+                "Terror", "1986", PageRequest.of(0, 3));
+        assertEquals(books.getTotalElements(), 1);
     }
 
     @Test
     public void givenAnExistingTitle_whenFindAll_thenBooksIsReturned() {
         bookRepository.save(oneTestBook);
-        List<Book> books = bookRepository.findAll(null, null, null, null,
-                "Viking Press", null, null, null, null, null);
-        assertThat(books, is(not(empty())));
+        Page<Book> books = bookRepository.findAll(null, null, null, null,
+                "Viking Press", null, null, null, null, null,
+                PageRequest.of(0, 3));
+        assertEquals(books.getTotalElements(), 1);
     }
 
 }

@@ -51,8 +51,8 @@ public class UserController {
     }
 
     /**
-     *
      * @param userName Name of a {@link Users}
+     *
      * @return {@link Users} with the name passed as parameter
      */
     @GetMapping("/name/{userName}")
@@ -62,8 +62,8 @@ public class UserController {
     }
 
     /**
-     *
      * @param id: Id of a user
+     *
      * @return {@link Users} with the id passed as parameter
      */
     @GetMapping("/{id}")
@@ -73,8 +73,8 @@ public class UserController {
     }
 
     /**
-     *
      * @param user: user to be created
+     *
      * @return {@link Users} created
      */
     @PostMapping
@@ -87,7 +87,6 @@ public class UserController {
     }
 
     /**
-     *
      * @param id: User Id to be deleted
      */
     @DeleteMapping("/{id}")
@@ -98,9 +97,9 @@ public class UserController {
     }
 
     /**
-     *
      * @param user: {@link Users} to be updated
-     * @param id: User Id to be updated
+     * @param id:   User Id to be updated
+     *
      * @return {@link Users} updated
      */
     @PutMapping("/{id}")
@@ -114,6 +113,8 @@ public class UserController {
     }
 
     /**
+     * @param book: Book to be added
+     * @param id:   User Id where the book will be added
      *
      * @param userId: {@link Users} id
      * @param password: {@link Users} password
@@ -151,9 +152,9 @@ public class UserController {
     }
 
     /**
-     *
      * @param book: Book to be deleted
-     * @param id: User Id where the book will be deleted
+     * @param id:   User Id where the book will be deleted
+     *
      * @return {@link Users} with book deleted
      */
     @DeleteMapping("/book/{id}")
@@ -165,8 +166,8 @@ public class UserController {
     }
 
     /**
-     *
      * @param authentication: login {@link Users}
+     *
      * @return login {@link Users} name
      */
     @GetMapping("/username")
@@ -175,15 +176,17 @@ public class UserController {
     }
 
     /**
-     *
      * @param startDate: initial date for search {@link Users}
-     * @param endDate: final date for search {@link Users}
-     * @param sequence: {@link Users} name character sequence
+     * @param endDate:   final date for search {@link Users}
+     * @param sequence:  {@link Users} name character sequence
+     *
      * @return List of {@link Users}
      */
     @GetMapping("/specific")
-    public List<Users> getUsersByBirthdateAndCharacterSequenceName(@RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate, @RequestParam String sequence) {
+    public List<Users> getUsersByBirthdateAndCharacterSequenceName(
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate,
+            @RequestParam(required = false) String sequence) {
 
         return userRepository.findByNameIgnoreCaseContainingAndBirthdateBetween(startDate, endDate, sequence);
     }

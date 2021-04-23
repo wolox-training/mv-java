@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.util.List;
 import java.util.Optional;
+import org.aspectj.apache.bcel.classfile.Module.Require;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -162,8 +163,9 @@ public class BookController {
             @ApiResponse(code = 200, message = "Book found"),
             @ApiResponse(code = 404, message = "Book not found")
     })
-    public List<Book> getBookByPublisherAndGenreAndYear(@RequestParam String publisher,
-            @RequestParam String genre, @RequestParam String year) {
+    public List<Book> getBookByPublisherAndGenreAndYear(@RequestParam(required = false)
+            String publisher, @RequestParam(required = false) String genre,
+            @RequestParam(required = false) String year) {
 
         return bookRepository.findByPublisherAndGenreAndYear(publisher, genre, year);
     }

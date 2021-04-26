@@ -38,15 +38,8 @@ public class UserController {
      */
     @GetMapping("/name/{userName}")
     public Users findByName(@PathVariable String userName) {
-
-        Users user;
-        try {
-            user = userRepository.findByName(userName);
-        } catch(Exception e) {
-            throw new UserNotFoundException();
-        }
-
-        return user;
+        return userRepository.findByName(userName)
+                .orElseThrow(UserNotFoundException::new);
     }
 
     /**

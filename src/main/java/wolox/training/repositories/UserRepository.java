@@ -8,6 +8,6 @@ import wolox.training.models.Users;
 @Repository
 public interface UserRepository extends JpaRepository<Users, Long> {
 
-    Users findByName(String name);
+    Optional<Users> findByName(String name);
 
 }

@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -172,4 +173,20 @@ public class UserController {
     public String currentUserName(Authentication authentication) {
         return authentication.getName();
     }
+
+    /**
+     *
+     * @param startDate: initial date for search {@link Users}
+     * @param endDate: final date for search {@link Users}
+     * @param sequence: {@link Users} name character sequence
+     * @return List of {@link Users}
+     */
+    @GetMapping("/specific")
+    public List<Users> getUsersByBirthdateAndCharacterSequenceName(@RequestParam LocalDate startDate,
+            @RequestParam LocalDate endDate, @RequestParam String sequence) {
+
+        return userRepository.findByNameIgnoreCaseContainingAndBirthdateBetween(startDate, endDate, sequence);
+    }
+
+
 }

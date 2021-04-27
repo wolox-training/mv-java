@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import wolox.training.exceptions.BookIdMismatchException;
@@ -146,6 +147,25 @@ public class BookController {
                         bookRepository.save(openLibraryService.bookInfo(isbn)
                                 .orElseThrow(BookNotFoundException::new))
                         , HttpStatus.CREATED));
+    }
+
+    /**
+     *
+     * @param publisher: {@link Book} publisher
+     * @param genre: {@link Book} genre
+     * @param year: {@link Book} year
+     * @return List of {@link Book}
+     */
+    @GetMapping("/specific")
+    @ApiOperation(value = "Giving an publisher, genre and year, return the books")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Book found"),
+            @ApiResponse(code = 404, message = "Book not found")
+    })
+    public List<Book> getBookByPublisherAndGenreAndYear(@RequestParam String publisher,
+            @RequestParam String genre, @RequestParam String year) {
+
+        return bookRepository.findByPublisherAndGenreAndYear(publisher, genre, year);
     }
 
 }

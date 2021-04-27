@@ -1,8 +1,13 @@
 package wolox.training.repositories;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertNotNull;
 
 import java.time.LocalDate;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,6 +43,13 @@ public class UserRepositoryTest {
     public void whenCreateUserWithoutUsername_thenThrowException() {
         oneTestUser.setUsername(null);
         userRepository.save(oneTestUser);
+    }
+
+    @Test
+    public void testingFindByNameContainingAndBirthdateBetweenMethod(){
+        userRepository.save(oneTestUser);
+        List<Users> users = userRepository.findByNameIgnoreCaseContainingAndBirthdateBetween(LocalDate.of(1996,4,11), LocalDate.of(1996,6,11), "TIAS" );
+        assertThat(users, is(not(empty())));
     }
 
 }

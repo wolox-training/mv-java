@@ -1,7 +1,10 @@
 package wolox.training.controllers;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import wolox.training.exceptions.UserIdMismatchException;
@@ -29,6 +33,15 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @GetMapping("/loggedUser")
+    @ApiOperation(value = "Logged user's username", response = String.class)
+    @ApiResponses(value = @ApiResponse(code = 200, message = "Successfully username"))
+    public Users currentUserName(Principal principal) {
+        Users user = new Users();
+        user.setUsername(principal.getName());
+        return user;
+    }
 
     @GetMapping
     public List<Users> findAll() {
@@ -95,6 +108,26 @@ public class UserController {
         }
         userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
+        return userRepository.save(user);
+    }
+
+    /**
+     *
+     * @param userId: {@link Users} id
+     * @param password: {@link Users} password
+     * @return {@link Users} updated
+     */
+
+    @PutMapping("/{id}/password")
+    @ApiOperation(value = "Giving an id, updates the user password", response = Users.class)
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "User updated successfully"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")})
+    public Users updateUser(@PathVariable Long userId,
+            @RequestParam(name = "password") String password) {
+
+        Users user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         return userRepository.save(user);
     }
 

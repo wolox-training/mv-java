@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import wolox.training.exceptions.BookIdMismatchException;
@@ -130,26 +129,23 @@ public class BookController {
     }
 
     /**
-     *
      * @param isbn: isbn of a book
      * @return {@link Book} by ISBN
      */
-    @GetMapping("/isbn")
+    @GetMapping("/isbn/{isbn}")
     @ApiOperation(value = "Giving an isbn, return the book")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Book found"),
             @ApiResponse(code = 404, message = "Book not found")
     })
-    public ResponseEntity<Book> getBookByISBN(@RequestParam String isbn) {
-
+    public ResponseEntity<Book> getBookByISBN(@PathVariable String isbn) {
         Optional<Book> book = bookRepository.findByisbn(isbn);
-
-        if(!book.isPresent()) {
-            return new ResponseEntity<>(bookRepository.save(openLibraryService.bookInfo(isbn).get())
-                    , HttpStatus.CREATED);
-        }
-
-        return new ResponseEntity<>(book.get(), HttpStatus.OK);
+        return book
+                .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(
+                        bookRepository.save(openLibraryService.bookInfo(isbn)
+                                .orElseThrow(BookNotFoundException::new))
+                        , HttpStatus.CREATED));
     }
 
 }

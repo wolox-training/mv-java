@@ -23,6 +23,8 @@ public class Users {
     @Column(nullable = false)
     private String username;
 
+    private String password;
+
     @Column(nullable = false)
     private String name;
 
@@ -49,6 +51,14 @@ public class Users {
 
         Preconditions.checkNotNull(username, "Please check the String username supplied, its null!");
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {

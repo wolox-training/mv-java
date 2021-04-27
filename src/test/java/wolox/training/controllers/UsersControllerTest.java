@@ -15,6 +15,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import wolox.training.models.Users;
 import wolox.training.repositories.UserRepository;
 
@@ -41,6 +43,7 @@ public class UsersControllerTest {
     public void setUp() {
         oneTestUser = new Users();
         oneTestUser.setUsername("ramiselton");
+        oneTestUser.setPassword("123456");
         oneTestUser.setName("Ramiro Selton");
         oneTestUser.setBirthdate(LocalDate.parse("1990-03-27"));
     }
@@ -80,6 +83,12 @@ public class UsersControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(userJson));
 
+    }
+
+    @Test
+    public void testingGetAllUsers_WithoutAuth() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/api/users/").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
 }

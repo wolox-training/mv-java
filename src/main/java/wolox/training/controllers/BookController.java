@@ -140,7 +140,7 @@ public class BookController {
             @ApiResponse(code = 404, message = "Book not found")
     })
     public ResponseEntity<Book> getBookByISBN(@PathVariable String isbn) {
-        Optional<Book> book = bookRepository.findByisbn(isbn);
+        Optional<Book> book = bookRepository.findByIsbn(isbn);
         return book
                 .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(

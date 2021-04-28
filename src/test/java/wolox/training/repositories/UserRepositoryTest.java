@@ -46,10 +46,21 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void testingFindByNameContainingAndBirthdateBetweenMethod(){
+    public void whenfindByNameIgnoreCaseContainingAndBirthdateBetweenMethod_theUsersIsReturned(){
         userRepository.save(oneTestUser);
-        List<Users> users = userRepository.findByNameIgnoreCaseContainingAndBirthdateBetween(LocalDate.of(1996,4,11), LocalDate.of(1996,6,11), "TIAS" );
+        List<Users> users = userRepository.findByNameIgnoreCaseContainingAndBirthdateBetween
+                (LocalDate.of(1996,4,11),
+                        LocalDate.of(1996,6,11), "TIAS" );
         assertThat(users, is(not(empty())));
     }
 
+    @Test
+    public void whenfindByNameIgnoreCaseContainingNullAndDateNull_theUsersIsReturned() {
+        userRepository.save(oneTestUser);
+        List<Users> users = userRepository.
+                findByNameIgnoreCaseContainingAndBirthdateBetween(null,
+                        null,
+                        null);
+        assertThat(users, is(not(empty())));
+    }
 }

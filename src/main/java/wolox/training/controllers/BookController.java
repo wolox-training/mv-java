@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.util.List;
 import java.util.Optional;
-import org.aspectj.apache.bcel.classfile.Module.Require;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,8 +41,19 @@ public class BookController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Books found")
     })
-    public List<Book> findAll() {
-        return bookRepository.findAll();
+    public List<Book> findAll(@RequestParam(required = false) Long bookId,
+            @RequestParam(required = false) String genre,
+            @RequestParam(required = false) String author,
+            @RequestParam(required = false)String image,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String subtitle,
+            @RequestParam(required = false) String publisher,
+            @RequestParam(required = false) String year,
+            @RequestParam(required = false) Long pages,
+            @RequestParam(required = false) String isbn
+            ) {
+        return bookRepository.findAll(bookId, genre, author, image, title, subtitle, publisher,
+                year, pages, isbn);
     }
 
     /**

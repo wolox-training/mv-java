@@ -10,13 +10,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Setter;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 import wolox.training.exceptions.BookNotFoundException;
 
+@Data
 @Entity
 public class Users {
 
     @Id
+    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long userId;
 
@@ -35,44 +40,16 @@ public class Users {
     @ManyToMany
     private List<Book> books = Collections.emptyList();
 
-    public Users() {
-
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
     public void setUsername(String username) {
 
         Preconditions.checkNotNull(username, "Please check the String username supplied, its null!");
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
 
         Preconditions.checkNotNull(name, "Please check the String name supplied, its null!");
         this.name = name;
-    }
-
-    public LocalDate getBirthdate() {
-        return birthdate;
     }
 
     public void setBirthdate(LocalDate birthdate) {

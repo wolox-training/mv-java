@@ -10,12 +10,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Setter;
 
+@Data
 @Entity
 @ApiModel(description = "Books from the OpenLibraryAPI")
 public class Book {
 
     @Id
+    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long bookId;
 
@@ -53,34 +58,10 @@ public class Book {
     @ManyToMany(mappedBy = "books")
     private List<Users> users;
 
-    public Book() {
-
-    }
-
-    public Long getBookId() {
-        return bookId;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
     public void setAuthor(String author) {
 
         Preconditions.checkNotNull(author, "Please check the String author supplied, its null!");
         this.author = author;
-    }
-
-    public String getImage() {
-        return image;
     }
 
     public void setImage(String image) {
@@ -89,18 +70,10 @@ public class Book {
         this.image = image;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public void setTitle(String title) {
 
         Preconditions.checkNotNull(title, "Please check the String title supplied, its null!");
         this.title = title;
-    }
-
-    public String getSubtitle() {
-        return subtitle;
     }
 
     public void setSubtitle(String subtitle) {
@@ -109,18 +82,10 @@ public class Book {
         this.subtitle = subtitle;
     }
 
-    public String getPublisher() {
-        return publisher;
-    }
-
     public void setPublisher(String publisher) {
 
         Preconditions.checkNotNull(publisher, "Please check the String publisher supplied, its null!");
         this.publisher = publisher;
-    }
-
-    public String getYear() {
-        return year;
     }
 
     public void setYear(String year) {
@@ -129,28 +94,16 @@ public class Book {
         this.year = year;
     }
 
-    public Long getPages() {
-        return pages;
-    }
-
     public void setPages(Long pages) {
 
         Preconditions.checkNotNull(pages, "Please check the Long pages supplied, its null!");
         this.pages = pages;
     }
 
-    public String getIsbn() {
-        return isbn;
-    }
-
     public void setIsbn(String isbn) {
 
         Preconditions.checkNotNull(isbn, "Please check the String isbn supplied, its null!");
         this.isbn = isbn;
-    }
-
-    public List<Users> getUsers() {
-        return users;
     }
 
     public void setUsers(List<Users> users) {

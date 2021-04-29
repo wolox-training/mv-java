@@ -7,6 +7,7 @@ import java.security.Principal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -160,5 +161,15 @@ public class UserController {
                 .orElseThrow(UserNotFoundException::new);
         user.deleteBook(book.getBookId());
         return userRepository.save(user);
+    }
+
+    /**
+     *
+     * @param authentication: login {@link Users}
+     * @return login {@link Users} name
+     */
+    @GetMapping("/username")
+    public String currentUserName(Authentication authentication) {
+        return authentication.getName();
     }
 }

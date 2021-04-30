@@ -11,11 +11,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.client.RestTemplate;
 import wolox.training.models.Book;
 
 @ExtendWith(SpringExtension.class)
@@ -57,20 +61,5 @@ public class OpenLibraryServiceTest {
         Optional<Book> optionalBookInfoDTO = openLibraryService.bookInfo(isbn);
 
         assertEquals(optionalBookInfoDTO.get().getIsbn(), isbn);
-    }
-
-    @Test
-    public void wiremockExceptionTest() {
-
-        this.wireMockServer.stubFor(
-                WireMock.get(URL)
-                        .willReturn(aResponse()
-                                .withStatus(200)
-                                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
-                                .withBody(""))
-        );
-
-        Assertions.assertThrows(IllegalArgumentException.class, ()-> openLibraryService.bookInfo(
-                ISBN));
     }
 }

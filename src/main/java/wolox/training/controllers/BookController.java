@@ -146,26 +146,23 @@ public class BookController {
     }
 
     /**
-     *
      * @param isbn: isbn of a book
      * @return {@link Book} by ISBN
      */
-    @GetMapping("/isbn")
+    @GetMapping("/isbn/{isbn}")
     @ApiOperation(value = "Giving an isbn, return the book")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Book found"),
             @ApiResponse(code = 404, message = "Book not found")
     })
-    public ResponseEntity<Book> getBookByISBN(@RequestParam String isbn) {
-
-        Optional<Book> book = bookRepository.findByisbn(isbn);
-
-        if(!book.isPresent()) {
-            return new ResponseEntity<>(bookRepository.save(openLibraryService.bookInfo(isbn).get())
-                    , HttpStatus.CREATED);
-        }
-
-        return new ResponseEntity<>(book.get(), HttpStatus.OK);
+    public ResponseEntity<Book> getBookByISBN(@PathVariable String isbn) {
+        Optional<Book> book = bookRepository.findByIsbn(isbn);
+        return book
+                .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(
+                        bookRepository.save(openLibraryService.bookInfo(isbn)
+                                .orElseThrow(BookNotFoundException::new))
+                        , HttpStatus.CREATED));
     }
 
     /**

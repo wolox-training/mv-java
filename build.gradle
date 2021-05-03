@@ -28,6 +28,7 @@ dependencies {
 	testCompile('com.h2database:h2')
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.security:spring-security-test'
+	testCompile "com.github.tomakehurst:wiremock-jre8:2.27.2"
 }
 
 test {

@@ -11,4 +11,5 @@ public class PublisherDTO {
     public void setName(String name) {
         this.name = name;
     }
+
 }

@@ -4,24 +4,25 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import wolox.training.models.Book;
 import wolox.training.repositories.BookRepository;
+import wolox.training.services.OpenLibraryService;
 
 @WebMvcTest(BookController.class)
+@ExtendWith(SpringExtension.class)
 public class BookControllerTest {
 
     @Autowired
@@ -30,19 +31,16 @@ public class BookControllerTest {
     @MockBean
     private BookRepository mockBookRepository;
 
+    @MockBean
+    private OpenLibraryService openLibraryService;
+
     private Book oneTestBook;
 
     private String bookJson = "{\"bookId\":null,\"genre\":\"Terror\","
             + "\"author\":\"Stephen King\",\"image\":\"https://imagesforus.com/idsarf12.png\""
             + ",\"title\":\"It\",\"subtitle\":\"Worst Clown Ever\",\"publisher\":"
-            + "\"Viking Press\",\"year\":\"1986\",\"pages\":\"1500\",\"isbn\":\"4578-245654\","
-            + "\"users\":null}]}";
-
-    private String listOfBookJson = "[{\"bookId\":null,\"genre\":\"Terror\","
-            + "\"author\":\"Stephen King\",\"image\":\"https://imagesforus.com/idsarf12.png\""
-            + ",\"title\":\"It\",\"subtitle\":\"Worst Clown Ever\",\"publisher\":"
             + "\"Viking Press\",\"year\":\"1986\",\"pages\":1500,\"isbn\":\"4578-245654\","
-            + "\"users\":null}]]}";
+            + "\"users\":null}]}";
 
     @BeforeEach
     public void setUp() {
@@ -60,6 +58,7 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void givenExistingId_whenFindById_thenBookIsReturned() throws Exception {
         Mockito.when(mockBookRepository.findById(1L)).thenReturn(java.util.Optional.ofNullable(oneTestBook));
         String url = "/api/books/1";
@@ -67,19 +66,6 @@ public class BookControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(bookJson));
-
-    }
-
-    @Test
-    public void whenFindAllBooksWhichExists_thenBooksIsReturned() throws Exception {
-        List<Book> books = Arrays.asList(oneTestBook);
-
-        Mockito.when(mockBookRepository.findAll()).thenReturn(books);
-        String url = "/api/books";
-        mvc.perform(get(url)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(listOfBookJson));
 
     }
 

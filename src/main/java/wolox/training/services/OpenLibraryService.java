@@ -21,14 +21,12 @@ public class OpenLibraryService {
     @Value("${external.api.url}")
     private String externalApiUrl;
 
-    @Autowired
-    RestTemplate restTemplate;
-
     public Optional<Book> bookInfo(String isbn) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
         objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        RestTemplate restTemplate = new RestTemplate();
         String queryParam = "ISBN:" + isbn;
         String url = String.format(externalApiUrl, queryParam);
         try {

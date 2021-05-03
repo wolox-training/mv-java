@@ -9,11 +9,15 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -21,6 +25,7 @@ import wolox.training.models.Users;
 import wolox.training.repositories.UserRepository;
 
 @WebMvcTest(UserController.class)
+@ExtendWith(SpringExtension.class)
 public class UsersControllerTest {
 
     @Autowired
@@ -28,6 +33,9 @@ public class UsersControllerTest {
 
     @MockBean
     private UserRepository mockUserRepository;
+
+    @MockBean
+    private PasswordEncoder password;
 
     private Users oneTestUser;
 
@@ -49,20 +57,7 @@ public class UsersControllerTest {
     }
 
     @Test
-    public void whenFindAllUsers_thenUsersIsReturned() throws Exception {
-
-        List<Users> users = Arrays.asList(oneTestUser);
-
-        Mockito.when(mockUserRepository.findAll()).thenReturn(users);
-        String url = ("/api/users");
-        mvc.perform(get(url)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(jsonListOfUser));
-
-    }
-
-    @Test
+    @WithMockUser
     public void givenExistingName_whenFindByName_thenUserIsReturned() throws Exception {
 
         Mockito.when(mockUserRepository.findByName("Ramiro Selton")).thenReturn(
@@ -75,6 +70,7 @@ public class UsersControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void givenExistingId_whenFindById_thenUserIsReturned() throws Exception {
         Mockito.when(mockUserRepository.findById(1L)).thenReturn(java.util.Optional.ofNullable(oneTestUser));
         String url = ("/api/users/1");
